@@ -9,8 +9,9 @@ Interested in ciphers so just created this and previously created a similar prog
 
 **Currently implemented ciphers**:
 
-* Caesar Shift: encryption, decryption (with a key or force search)
-* Substitution Cipher: encryption, decryption (with a key)
+* Atbash: encryption and decryption (there is only one key)
+* Caesar Shift: encryption and decryption, with a key or force search
+* Substitution Cipher: encryption and decryption with a key
 
 **Planned Ciphers**:
 
@@ -18,7 +19,6 @@ Interested in ciphers so just created this and previously created a similar prog
 * Autokey
 * Beaufort
 * Hill
-* Atbash
 * Affine
 * Unknown (attempts decryption even if the cipher is unknown)
 

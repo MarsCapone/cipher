@@ -20,16 +20,14 @@ public class Substitution extends Cipher {
         super(text, option);
     }
 
-    public String getKey() {
-        return key;
-    }
-
     public void setKey(String key) {
+        key = key.toLowerCase();
         if (key.length() == 26) {
             this.key = key;
         } else {
             this.key = generateKeySequence(key);
         }
+        initKeymap();
     }
 
     private void initKeymap() {
