@@ -6,6 +6,10 @@ public class CaesarShift extends Cipher {
 
     private ArrayList<String> probableSolutions;
 
+    public CaesarShift() {
+        super();
+    }
+
     public CaesarShift(String ciphertext) {
         super(ciphertext);
     }

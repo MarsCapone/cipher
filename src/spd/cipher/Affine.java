@@ -6,6 +6,10 @@ public class Affine extends Cipher {
     private int a_key;
     private int b_key;
 
+    public Affine() {
+        super();
+    }
+
     public Affine(String ciphertext) {
         super(ciphertext);
     }
@@ -19,7 +23,7 @@ public class Affine extends Cipher {
     }
 
     private char encLet(char letter) {
-        return (char) ((a_key * letter + b_key)%26);
+        return (char) (((a_key * letter + b_key)%26)+97);
     }
 
     private char decLet(char letter) {
@@ -30,7 +34,8 @@ public class Affine extends Cipher {
                 break;
             }
         }
-        return (char) (inverse_a*(letter - b_key));
+        System.out.println(inverse_a);
+        return (char) ((inverse_a*(letter - b_key))+97);
     }
 
     public String encrypt() {
@@ -47,7 +52,11 @@ public class Affine extends Cipher {
         char[] ciphertextArray = ciphertext.toCharArray();
         char[] plaintextArray = new char[textlength];
         for (int i=0; i<textlength; i++) {
-            plaintextArray[i] = decLet(ciphertextArray[i]);
+            if (decLet(ciphertextArray[i]) <= 122 || decLet(ciphertextArray[i]) >= 97) {
+                plaintextArray[i] = decLet(ciphertextArray[i]);
+            } else {
+                break;
+            }
         }
         return new String(plaintextArray);
     }

@@ -2,6 +2,11 @@ package spd.cipher;
 
 public class Atbash extends Substitution {
 
+    public Atbash() {
+        super();
+        setKey("zyxwvutsrqponmlkjihgfedcba");
+    }
+
     public Atbash(String ciphertext) {
         super(ciphertext);
         setKey("zyxwvutsrqponmlkjihgfedcba");

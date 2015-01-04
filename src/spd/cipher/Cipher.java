@@ -11,6 +11,10 @@ public class Cipher {
 
     protected int textlength;
 
+    public Cipher() {
+        this("defend the east wall of the castle");
+    }
+
     public Cipher(String ciphertext) {
         this.ciphertext = removePunctuation(ciphertext.toLowerCase());
         this.textlength = this.ciphertext.length();
