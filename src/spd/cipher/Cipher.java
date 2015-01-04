@@ -9,16 +9,22 @@ public class Cipher {
     protected String ciphertext;
     protected String plaintext;
 
+    protected int textlength;
+
     public Cipher(String ciphertext) {
         this.ciphertext = removePunctuation(ciphertext.toLowerCase());
+        this.textlength = this.ciphertext.length();
     }
 
     public Cipher(String text, int option) {
         if (option == 0) {
             this.ciphertext = removePunctuation(text.toLowerCase());
+            this.textlength = this.ciphertext.length();
         } else if (option == 1) {
             this.plaintext = removePunctuation(text.toLowerCase());
+            this.textlength = this.plaintext.length();
         }
+
     }
 
 
