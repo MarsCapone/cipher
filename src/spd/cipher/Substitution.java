@@ -1,10 +1,6 @@
 package spd.cipher;
 
-import com.sun.org.apache.xml.internal.security.utils.resolver.implementations.ResolverAnonymous;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class Substitution extends Cipher {
