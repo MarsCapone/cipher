@@ -36,19 +36,15 @@ public class CaesarShift extends Cipher {
 
     public String decrypt() {
         String[] allShifts = decryptAllShifts();
-        int score = 0;
+        double score = 9999.0;
         String probablePlaintext = "";
-        ArrayList<String> probableShifts = new ArrayList<String>();
         for (String shift: allShifts) {
-            if (English.englishScore(shift) > score) {
-                score = English.englishScore(shift);
+            double chi = English.chiSquaredStat(shift);
+            if (chi < score) {
+                score = chi;
                 probablePlaintext = shift;
-                if (score == 12) {
-                    probableShifts.add(shift);
-                }
             }
         }
-        this.probableSolutions = probableShifts;
         return probablePlaintext;
     }
 

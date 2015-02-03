@@ -1,6 +1,7 @@
 package spd.cipher;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
@@ -12,6 +13,7 @@ public class CipherGui implements ActionListener {
     private JLabel label_ciphertext;
     private JLabel label_englishness;
     private JLabel label_author;
+    private JLabel label_key;
 
     private JTextArea textarea_plaintext;
     private JTextArea textarea_ciphertext;
@@ -32,18 +34,15 @@ public class CipherGui implements ActionListener {
 
     private JCheckBox checkbox_inferspaces;
 
-    private JSlider slider_englishness;
-
     private JButton button_go;
 
     private JFormattedTextField keyField;
-    private JLabel label_key;
-
 
     public CipherGui() {
         JFrame frame = new JFrame("CipherGui");
         frame.setContentPane(this.root);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(600, 480));
 
         combobox_encdec.setEnabled(true);
 
@@ -61,6 +60,11 @@ public class CipherGui implements ActionListener {
 
         button_go.addActionListener(this);
 
+        textarea_ciphertext.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textarea_ciphertext.setLineWrap(true);
+        textarea_plaintext.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textarea_plaintext.setLineWrap(true);
+
         frame.pack();
         frame.setVisible(true);
     }
@@ -77,7 +81,6 @@ public class CipherGui implements ActionListener {
             String cipherType = getCipherType().toLowerCase();
             String key = getKey();
             boolean inferSpaces = inferSpaces();
-            int englishness = getEnglishness();
 
             boolean encrypt = getEncDec().equalsIgnoreCase("encrypt");
 
@@ -148,8 +151,14 @@ public class CipherGui implements ActionListener {
                         break;
                 }
                 if (encrypt) {
+                    if (inferSpaces) {
+                        ciphertext = English.inferSpaces(ciphertext);
+                    }
                     setCiphertext(ciphertext);
                 } else {
+                    if (inferSpaces) {
+                        plaintext = English.inferSpaces(plaintext);
+                    }
                     setPlaintext(plaintext);
                 }
             }
@@ -185,10 +194,6 @@ public class CipherGui implements ActionListener {
 
     private boolean inferSpaces() {
         return checkbox_inferspaces.isSelected();
-    }
-
-    private int getEnglishness() {
-        return slider_englishness.getValue();
     }
 
     private String getEncDec() {

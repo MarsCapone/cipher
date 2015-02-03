@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="spd.cipher.CipherGui">
-  <grid id="27dc6" binding="root" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="root" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="673" height="566"/>
+      <xy x="20" y="20" width="748" height="566"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="b9d97" layout-manager="GridLayoutManager" row-count="11" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="b9d97" layout-manager="GridLayoutManager" row-count="13" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="2" row-span="2" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -52,7 +52,7 @@
           </component>
           <component id="4614c" class="javax.swing.JLabel">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <labelFor value="fbfed"/>
@@ -99,20 +99,43 @@
               <text value="Hill"/>
             </properties>
           </component>
-          <component id="40424" class="javax.swing.JFormattedTextField" binding="keyField">
+          <component id="8f71b" class="javax.swing.JLabel">
             <constraints>
-              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Key"/>
+            </properties>
+          </component>
+          <component id="feec4" class="javax.swing.JFormattedTextField" binding="keyField">
+            <constraints>
+              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="be311" class="javax.swing.JLabel" binding="label_key">
+          <component id="fbfed" class="javax.swing.JComboBox" binding="combobox_encdec">
             <constraints>
-              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="12" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="123" height="24"/>
+              </grid>
             </constraints>
             <properties>
-              <text value="Key"/>
+              <enabled value="false"/>
+              <model>
+                <item value="Encrypt"/>
+                <item value="Decrypt"/>
+              </model>
+              <toolTipText value="Encrypt or Decrypt the text"/>
+            </properties>
+          </component>
+          <component id="4f3a6" class="javax.swing.JRadioButton" binding="cipher_rot13">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="ROT13"/>
             </properties>
           </component>
         </children>
@@ -133,35 +156,10 @@
           <text value="Cipher Decrypter / Encrypter"/>
         </properties>
       </component>
-      <grid id="c387f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="e0ba8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="fbfed" class="javax.swing.JComboBox" binding="combobox_encdec">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="123" height="24"/>
-              </grid>
-            </constraints>
-            <properties>
-              <enabled value="false"/>
-              <model>
-                <item value="Encrypt"/>
-                <item value="Decrypt"/>
-              </model>
-              <toolTipText value="Encrypt or Decrypt the text"/>
-            </properties>
-          </component>
-        </children>
-      </grid>
-      <grid id="e0ba8" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="3" column="1" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -175,20 +173,6 @@
               <text value="Infer Spaces"/>
             </properties>
           </component>
-          <component id="a4f5" class="javax.swing.JSlider" binding="slider_englishness">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <majorTickSpacing value="1"/>
-              <maximum value="12"/>
-              <paintLabels value="true"/>
-              <paintTicks value="true"/>
-              <paintTrack value="false"/>
-              <value value="9"/>
-              <valueIsAdjusting value="false"/>
-            </properties>
-          </component>
         </children>
       </grid>
       <component id="6fec9" class="javax.swing.JLabel" binding="label_ciphertext">
@@ -200,17 +184,9 @@
           <verticalAlignment value="0"/>
         </properties>
       </component>
-      <component id="8a3a3" class="javax.swing.JLabel" binding="label_englishness">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Englishess"/>
-        </properties>
-      </component>
       <component id="43662" class="javax.swing.JButton" binding="button_go">
         <constraints>
-          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Cabin" size="36"/>
@@ -225,7 +201,20 @@
           <text value="by Samson Danziger"/>
         </properties>
       </component>
-      <scrollpane id="8224c">
+      <scrollpane id="e02fe">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="5350" class="javax.swing.JTextArea" binding="textarea_plaintext">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <scrollpane id="a382b">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -238,19 +227,14 @@
           </component>
         </children>
       </scrollpane>
-      <scrollpane id="93ed9">
+      <component id="8a3a3" class="javax.swing.JLabel" binding="label_englishness">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="e0089" class="javax.swing.JTextArea" binding="textarea_plaintext">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
+        <properties>
+          <text value="English"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

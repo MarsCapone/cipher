@@ -1,13 +1,48 @@
 package spd.cipher;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class English {
 
-    private static final int ENGLISH_12POINT_CUTOFF = 9;
-
     public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
     public static final char[] alphabetArray = alphabet.toCharArray();
+    public static final Map<Character, Double> expectedAlpha = createMap();
+    private static final int ENGLISH_12POINT_CUTOFF = 9;
+    public static TrieSET trieset = createTrieSet();
+
+    private static Map<Character, Double> createMap() {
+        Map<Character, Double> result = new HashMap<>();
+        result.put('a', 0.08167); result.put('b', 0.01492); result.put('c', 0.02782);
+        result.put('d', 0.04253); result.put('e', 0.12702); result.put('f', 0.02228);
+        result.put('g', 0.02015); result.put('h', 0.06094); result.put('i', 0.06966);
+        result.put('j', 0.00153); result.put('k', 0.00772); result.put('l', 0.04025);
+        result.put('m', 0.02406); result.put('n', 0.06749); result.put('o', 0.07507);
+        result.put('p', 0.01929); result.put('q', 0.00095); result.put('r', 0.05987);
+        result.put('s', 0.06327); result.put('t', 0.09056); result.put('u', 0.02758);
+        result.put('v', 0.00978); result.put('w', 0.02360); result.put('x', 0.00150);
+        result.put('y', 0.01974); result.put('z', 0.00074);
+
+        return Collections.unmodifiableMap(result);
+    }
+
+    private static TrieSET createTrieSet() {
+        try {
+            HashSet<String> dict = new HashSet<String>(FileUtils.readLines(new File("/home/samson/IdeaProjects/cipher/dictionaries/cracklib-small")));
+            TrieSET trie = new TrieSET();
+            Iterator it = dict.iterator();
+            while (it.hasNext()) {
+                trie.add((String) it.next());
+            }
+            return trie;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     public static LinkedHashMap<Character,Double> frequencyAnalysis(String string) {
@@ -68,7 +103,38 @@ public class English {
         return 0;
     }
 
-    public static boolean isEnglishEnough(String string) {
-        return englishScore(string) >= ENGLISH_12POINT_CUTOFF;
+    public static double chiSquaredStat(String string) {
+        double sum = 0;
+        double len = string.length();
+        LinkedHashMap frequency = English.frequencyAnalysis(string);
+        Iterator it = English.expectedAlpha.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            char letter = (char) pairs.getKey(); double expectedCount = (double) pairs.getValue() * len;
+            Object actualC = frequency.get(letter);
+            double actualCount = 0.0;
+            if (actualC != null) {
+                actualCount = (double) actualC;
+            }
+
+            sum += Math.pow((actualCount - expectedCount), 2) / expectedCount;
+        }
+        return sum;
+    }
+
+    public static String inferSpaces(String text) {
+        return inferSpaces(trieset, text);
+    }
+
+    public static String inferSpaces(TrieSET set, String text) {
+        StringBuilder sb = new StringBuilder();
+        String root = text;
+        while (root.length()>0) {
+            String word = set.longestPrefixOf(root);
+            root = root.substring(word.length());
+            sb.append(word);
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 }
