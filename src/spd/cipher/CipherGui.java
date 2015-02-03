@@ -37,7 +37,7 @@ public class CipherGui implements ActionListener {
     private JButton button_go;
 
     private JFormattedTextField keyField;
-
+    private JLabel label_key;
 
 
     public CipherGui() {
@@ -72,9 +72,9 @@ public class CipherGui implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == button_go) {
-            String plaintext = getPlaintext();
-            String ciphertext = getCiphertext();
-            String cipherType = getCipherType();
+            String plaintext = getPlaintext().toLowerCase();
+            String ciphertext = getCiphertext().toLowerCase();
+            String cipherType = getCipherType().toLowerCase();
             String key = getKey();
             boolean inferSpaces = inferSpaces();
             int englishness = getEnglishness();
@@ -86,7 +86,7 @@ public class CipherGui implements ActionListener {
                 showMessagePopup("A key is required for encryption", "Key required");
             } else {
 
-                switch (cipherType.toLowerCase()) {
+                switch (cipherType) {
                     case "caesar shift":
                         try {
                             if (encrypt) {
@@ -94,7 +94,7 @@ public class CipherGui implements ActionListener {
                                 ciphertext = caesar.encrypt(new Integer(key));
                             } else {
                                 CaesarShift caesar = new CaesarShift(ciphertext);
-                                if (key.equals("")) {
+                                if (!key.equals("")) {
                                     plaintext = caesar.decrypt(new Integer(key));
                                 } else {
                                     plaintext = caesar.decrypt();

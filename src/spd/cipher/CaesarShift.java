@@ -31,7 +31,7 @@ public class CaesarShift extends Cipher {
     }
 
     public String decrypt(int key) {
-        return shiftString(ciphertext, key);
+        return shiftString(ciphertext, 26-key);
     }
 
     public String decrypt() {
