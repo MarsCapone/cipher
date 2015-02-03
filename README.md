@@ -23,3 +23,8 @@ Interested in ciphers so just created this and previously created a similar prog
 * Hill
 * Unknown (attempts decryption even if the cipher is unknown)
 
+**GUI**:
+* There is a GUI
+* I currently implements Encryption and Decryption of Atbash, ROT13 and Caesar Shift
+* It can also somewhat infer spaces, but this needs work.
+
