@@ -148,25 +148,22 @@ public class Substitution extends Cipher {
      */
     public String hillClimbDecrypt() {
         //TODO Make this work. Would probably be better to implement QUADGRAM STATISTICS
+        NGramScore ngrams = new NGramScore("quadgrams.txt", 4);
         String decipheredText = "";
-        double fitness = 9999;
-        for (int i=0; i<100; i++) {
+        double fitness = -9999;
+        for (int i=0; i<1000; i++) {
             String parentKey = newRandomKey();
-            //System.out.println(parentKey);
             decipheredText = decrypt(parentKey);
-            fitness = English.chiSquaredStat(decipheredText);
+            fitness = ngrams.score(decipheredText);
             int count = 0;
             while (count < 1000) {
                 count++;
-                System.out.println(count);
                 String newKey = swap2letters(parentKey);
                 String newText = decrypt(newKey);
-                double newFitness = English.chiSquaredStat(newText);
-                if (newFitness < fitness) {
+                double newFitness = ngrams.score(newText);
+                if (newFitness > fitness) {
                     parentKey = newKey;
                     decipheredText = newText;
-                    //System.out.printf("%d   %s %n", count, decipheredText);
-                    //System.out.println();
                     fitness = newFitness;
                     count = 0;
                 }
