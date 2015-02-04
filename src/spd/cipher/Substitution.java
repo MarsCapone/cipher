@@ -134,7 +134,7 @@ public class Substitution extends Cipher {
         Random r = new Random();
 
         while (newKey.length() < 26) {
-            String next = String.valueOf((char) (r.nextInt(26) + 97)); // don't think this will work
+            String next = String.valueOf((char) (r.nextInt(26) + 97));
             if (!newKey.contains(next)) {
                 newKey += next;
             }
@@ -147,22 +147,29 @@ public class Substitution extends Cipher {
      * @return Hopefully the decrypted text.
      */
     public String hillClimbDecrypt() {
-        String parentKey = newRandomKey();
-        System.out.println(parentKey);
-        String decipheredText = decrypt(parentKey);
-        double fitness = English.chiSquaredStat(decipheredText);
-        int count = 0;
-        while (count < 1000) {
-            String newKey = swap2letters(parentKey);
-            String newText = decrypt(newKey);
-            double newFitness = English.chiSquaredStat(newText);
-            if (newFitness < fitness) {
-                parentKey = newKey;
-                decipheredText = newText;
-                System.out.println(decipheredText);
-                System.out.println();
-                fitness = newFitness;
-                count = 0;
+        //TODO Make this work. Would probably be better to implement QUADGRAM STATISTICS
+        String decipheredText = "";
+        double fitness = 9999;
+        for (int i=0; i<100; i++) {
+            String parentKey = newRandomKey();
+            //System.out.println(parentKey);
+            decipheredText = decrypt(parentKey);
+            fitness = English.chiSquaredStat(decipheredText);
+            int count = 0;
+            while (count < 1000) {
+                count++;
+                System.out.println(count);
+                String newKey = swap2letters(parentKey);
+                String newText = decrypt(newKey);
+                double newFitness = English.chiSquaredStat(newText);
+                if (newFitness < fitness) {
+                    parentKey = newKey;
+                    decipheredText = newText;
+                    //System.out.printf("%d   %s %n", count, decipheredText);
+                    //System.out.println();
+                    fitness = newFitness;
+                    count = 0;
+                }
             }
         }
         System.out.println("#########################################################################");

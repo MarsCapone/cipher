@@ -171,4 +171,6 @@ public class English {
         }
         return sb.toString();
     }
+
+    //TODO IMPLEMENT QUADGRAM STATISTICS
 }
