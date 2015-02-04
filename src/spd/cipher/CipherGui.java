@@ -59,6 +59,7 @@ public class CipherGui implements ActionListener {
         cipherType.add(cipher_rot13);
 
         button_go.addActionListener(this);
+        cipher_affine.addActionListener(this);
 
         textarea_ciphertext.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textarea_ciphertext.setLineWrap(true);
@@ -75,6 +76,11 @@ public class CipherGui implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == cipher_affine) {
+            showMessagePopup("If providing a key, please enter values for a and b in the form \"a,b\".\n"
+                    + "The equation for encryption is in the form, y=ax+b", "Incorrect Key");
+        }
+
         if (actionEvent.getSource() == button_go) {
             String plaintext = getPlaintext().toLowerCase();
             String ciphertext = getCiphertext().toLowerCase();
@@ -119,13 +125,13 @@ public class CipherGui implements ActionListener {
                             } else {
                                 Substitution sub = new Substitution(ciphertext);
                                 if (key.equals("")) {
-                                    plaintext = sub.decrypt();
+                                    plaintext = sub.hillClimbDecrypt();
                                 } else {
                                     plaintext = sub.decrypt(key);
                                 }
                             }
                         } catch (Exception e) {
-                            showMessagePopup(e.getMessage(), "ERROR");
+                            e.printStackTrace();
                         }
                         break;
                     case "rot13":
@@ -144,6 +150,26 @@ public class CipherGui implements ActionListener {
                         } else {
                             Atbash atbash = new Atbash(ciphertext);
                             plaintext = atbash.decrypt();
+                        }
+                        break;
+                    case "affine shift":
+                        try {
+                            if (encrypt) {
+                                String[] keys = key.split("\\D"); int a = Integer.valueOf(keys[0]); int b = Integer.valueOf(keys[1]);
+                                Affine affine = new Affine(plaintext, 1);
+                                ciphertext = affine.encrypt(a, b);
+                            } else {
+                                Affine affine = new Affine(ciphertext);
+                                if (key.equals("")) {
+                                    plaintext = affine.decrypt();
+                                } else {
+                                    String[] keys = key.split("\\D"); int a = Integer.valueOf(keys[0]); int b = Integer.valueOf(keys[1]);
+                                    plaintext = affine.decrypt(a, b);
+                                }
+                            }
+                        } catch (ArrayIndexOutOfBoundsException n) {
+                            showMessagePopup("Please enter values for a and b in the form \"a,b\", such that encryption is in the form, y=ax+b", "Incorrect Key");
+                            n.printStackTrace();
                         }
                         break;
                     default:
@@ -201,7 +227,7 @@ public class CipherGui implements ActionListener {
     }
 
     private void showMessagePopup(String message, String title) {
-        JOptionPane.showMessageDialog(this.root, message, title, JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this.root, message, title, JOptionPane.WARNING_MESSAGE);
     }
 
     private String getKey() {

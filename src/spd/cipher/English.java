@@ -10,10 +10,12 @@ public class English {
 
     public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
     public static final char[] alphabetArray = alphabet.toCharArray();
-    public static final Map<Character, Double> expectedAlpha = createMap();
-    private static final int ENGLISH_12POINT_CUTOFF = 9;
-    public static TrieSET trieset = createTrieSet();
+    public static final Map<Character, Double> expectedAlpha = createMap(); // the expected fractions of the english language for specific characters
+    public static TrieSET trieset = createTrieSet(); // A Trie Set preloaded with keys from a dictionary
 
+    /**
+     * @return Setup for the expectedAlpha variable
+     */
     private static Map<Character, Double> createMap() {
         Map<Character, Double> result = new HashMap<>();
         result.put('a', 0.08167); result.put('b', 0.01492); result.put('c', 0.02782);
@@ -29,6 +31,9 @@ public class English {
         return Collections.unmodifiableMap(result);
     }
 
+    /**
+     * @return Setup for the trieset variable
+     */
     private static TrieSET createTrieSet() {
         try {
             HashSet<String> dict = new HashSet<String>(FileUtils.readLines(new File("/home/samson/IdeaProjects/cipher/dictionaries/cracklib-small")));
@@ -44,7 +49,11 @@ public class English {
         }
     }
 
-
+    /**
+     * Create map of characters and numbers for counts of letters in a string
+     * @param string
+     * @return
+     */
     public static LinkedHashMap<Character,Double> frequencyAnalysis(String string) {
         LinkedHashMap<Character,Double> freq = new LinkedHashMap<Character, Double>();
         for (int i=0; i<string.length(); i++) {
@@ -59,6 +68,13 @@ public class English {
         return freq;
     }
 
+    /**
+     * Inefficient way to calculate englishness of a String. The highest value is 12 (very english).
+     * The lowest value is 0 (not very english)
+     * @param string The string to calculate englishness for.
+     * @return A value in the range 0-12
+     */
+    @Deprecated
     public static int englishScore(String string) {
 
             LinkedHashMap<Character, Double> frequency = frequencyAnalysis(string);
@@ -103,6 +119,12 @@ public class English {
         return 0;
     }
 
+    /**
+     * Calculate the Chi Squared Statistic for how English a string seems.
+     * Lower values are more English.
+     * @param string The string to calculate the statistic for
+     * @return The value of the statistic
+     */
     public static double chiSquaredStat(String string) {
         double sum = 0;
         double len = string.length();
@@ -122,10 +144,22 @@ public class English {
         return sum;
     }
 
+    /**
+     * Infer the spaces in a string. This currently not very well done.
+     * Currently uses the default trieset dictionary.
+     * @param text The text to find spaces for.
+     * @return The newly spaced text.
+     */
     public static String inferSpaces(String text) {
         return inferSpaces(trieset, text);
     }
 
+    /**
+     * Infer the spaces in a string. Currently not well done.
+     * @param set The Trie set to use
+     * @param text The text to find spaces for
+     * @return The newly spaced text
+     */
     public static String inferSpaces(TrieSET set, String text) {
         StringBuilder sb = new StringBuilder();
         String root = text;

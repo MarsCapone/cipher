@@ -12,6 +12,7 @@ public class Cipher {
     protected int textlength;
 
     public Cipher() {
+        //default cipher message
         this("defend the east wall of the castle");
     }
 
@@ -31,23 +32,39 @@ public class Cipher {
 
     }
 
+    /**
+     * Invert a HashMap
+     * @param map The HashMap to invert
+     * @param <V> A value
+     * @param <K> A Key
+     * @return A new HashMap with the keys and values swapped.
+     */
+    protected static <V, K> HashMap<V, K> invert(HashMap<K, V> map) {
+        HashMap<V, K> inv = new HashMap<V, K>();
+        for (Map.Entry<K, V> entry : map.entrySet())
+            inv.put(entry.getValue(), entry.getKey());
+        return inv;
+    }
 
+    /**
+     * @return The ciphertect
+     */
     public String getCiphertext() {
         return ciphertext;
     }
 
-    public void setCiphertext(String ciphertext) {
-        this.ciphertext = removePunctuation(ciphertext.toLowerCase());
-    }
-
+    /**
+     * @return The plaintext
+     */
     public String getPlaintext() {
         return plaintext;
     }
 
-    public void setPlaintext(String plaintext) {
-        this.plaintext = removePunctuation(plaintext.toLowerCase());
-    }
-
+    /**
+     * Turn a string to it's ascii numbers
+     * @param string
+     * @return An array of ints of the characters in the string
+     */
     public int[] ascify(String string) {
         char[] individualLetters = string.toCharArray();
         int[] asciiNumbers = new int[string.length()];
@@ -57,6 +74,11 @@ public class Cipher {
         return asciiNumbers;
     }
 
+    /**
+     * The opposite of ascify
+     * @param asciis
+     * @return A string from an array of ints of ascii values
+     */
     public String unascify(int[] asciis) {
         char[] individualLetters = new char[asciis.length];
         for (int i=0; i<asciis.length; i++) {
@@ -65,6 +87,11 @@ public class Cipher {
         return new String(individualLetters);
     }
 
+    /**
+     * Remove punctuation to a string
+     * @param string
+     * @return
+     */
     public String removePunctuation(String string) {
         char[] stringCharacters = string.toCharArray();
         String newString = "";
@@ -76,6 +103,11 @@ public class Cipher {
         return newString;
     }
 
+    /**
+     * Generate a completed key for substitution ciphers and similay from a key word
+     * @param keyword
+     * @return A 26 character key, beginning with the keyword, and subsequent letters in alphabetical order.
+     */
     public String generateKeySequence(String keyword) {
         ArrayList<Character> key = new ArrayList<Character>(26);
         int keywordLength = keyword.length();
@@ -98,13 +130,6 @@ public class Cipher {
             builder.append(ch);
         }
         return builder.toString();
-    }
-
-    protected static <V, K> HashMap<V, K> invert(HashMap<K, V> map) {
-        HashMap<V, K> inv = new HashMap<V, K>();
-        for (Map.Entry<K, V> entry : map.entrySet())
-            inv.put(entry.getValue(), entry.getKey());
-        return inv;
     }
 
 }

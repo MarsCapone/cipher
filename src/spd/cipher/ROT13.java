@@ -16,4 +16,8 @@ public class ROT13 extends Substitution {
         super(text, option);
         setKey("nopqrstuvwxyzabcdefghijklm");
     }
+
+    // no need for other methods here, because ROT13
+    // is the same as a substitution cipher, but with
+    // a predefined key.
 }

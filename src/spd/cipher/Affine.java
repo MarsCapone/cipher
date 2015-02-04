@@ -1,10 +1,6 @@
 package spd.cipher;
 
-import java.util.ArrayList;
-
 public class Affine extends Cipher {
-    private int a_key;
-    private int b_key;
 
     public Affine() {
         super();
@@ -18,66 +14,91 @@ public class Affine extends Cipher {
         super(text, option);
     }
 
-    public void setKey(int a, int b) {
-        a_key = a; b_key = b;
+
+    /**
+     * Encrypt an individual character
+     * @param letter The character to encrypt
+     * @param a
+     * @param b
+     * @return The encrypted character
+     */
+    private char encLet(char letter, int a, int b) {
+        return (char) (((a * (letter-97) + b)%26)+97);
     }
 
-    private char encLet(char letter) {
-        return (char) (((a_key * letter + b_key)%26)+97);
+    /**
+     * Decrypt an individual character
+     * @param letter The character to decrypt
+     * @param inverse_a
+     * @param b
+     * @return The decrypted character
+     */
+    private char decLet(char letter, int inverse_a, int b) {
+        int val = (inverse_a*((letter-97) - b));
+        return (char) (((val % 26 + 26) % 26)+97); //to get around java handling modulo weirdly
     }
 
-    private char decLet(char letter) {
-        int inverse_a = 0;
-        for (int i=1; i<26; i++) {
-            if ((a_key*i)%26 == 1) {
-                inverse_a = i;
-                break;
-            }
-        }
-        System.out.println(inverse_a);
-        return (char) ((inverse_a*(letter - b_key))+97);
-    }
-
-    public String encrypt() {
+    /**
+     * Encrypt the plaintext
+     * @param a Coefficient
+     * @param b Constant
+     * @return The encrypted plaintext
+     */
+    public String encrypt(int a, int b) {
         char[] plaintextArray = plaintext.toCharArray();
         char[] ciphertextArray = new char[textlength];
         for (int i=0; i<textlength; i++) {
-            ciphertextArray[i] = encLet(plaintextArray[i]);
+            ciphertextArray[i] = encLet(plaintextArray[i], a, b);
         }
         return new String(ciphertextArray);
     }
 
-    public String decrypt(int a_key, int b_key) {
-        setKey(a_key, b_key);
+    /**
+     * Decrypt the ciphertext
+     * @param a The encryption coefficent
+     * @param b The encryption constant
+     * @return The decrypted text
+     */
+    public String decrypt(int a, int b) {
         char[] ciphertextArray = ciphertext.toCharArray();
         char[] plaintextArray = new char[textlength];
-        for (int i=0; i<textlength; i++) {
-            if (decLet(ciphertextArray[i]) <= 122 || decLet(ciphertextArray[i]) >= 97) {
-                plaintextArray[i] = decLet(ciphertextArray[i]);
-            } else {
+
+        // find inverse_a first, so as not to calculate for every letter
+        int inverse_a = 0;
+        for (int i=1; i<26; i++) {
+            if ((a*i)%26 == 1) {
+                inverse_a = i;
                 break;
+            }
+        }
+
+        for (int i=0; i<textlength; i++) {
+            char letter = decLet(ciphertextArray[i], inverse_a, b);
+            if (letter <= 122 || letter >= 97) {
+                plaintextArray[i] = letter;
+            } else {
+                plaintextArray[i] = '@';
             }
         }
         return new String(plaintextArray);
     }
 
-    public String encrypt(int a_key, int b_key) {
-        setKey(a_key, b_key);
-        return encrypt();
-    }
-
+    /**
+     * Brute force decryption of ciphertext.
+     * @return Decrypted text
+     */
     public String decrypt() {
-        int score = 0;
+        double score = 9999.0;
         String probableSolution = "";
 
         for (int b=0; b<26; b++) {
             for (int a=1; a<26; a+=2) {
-                String tempSol = decrypt(a,b);
-                int tempScore = English.englishScore(tempSol);
-                if (tempScore > score) {
+                String temp = decrypt(a,b);
+                double tempScore = English.chiSquaredStat(temp);
+                if (tempScore < score) {
                     score = tempScore;
-                    probableSolution = tempSol;
-                    if (score == 12) {
+                    probableSolution = temp;
+                    if (score < 50) {
                         return probableSolution;
                     }
                 }
@@ -85,17 +106,4 @@ public class Affine extends Cipher {
         }
         return probableSolution;
     }
-
-    public ArrayList<String> decryptAll() {
-        ArrayList<String> allDecypts = new ArrayList<String>();
-        for (int b=0; b<26; b++) {
-            for (int a=1; a<26; a+=2) {
-                allDecypts.add(decrypt(a,b));
-            }
-        }
-        return allDecypts;
-    }
-
-    //TODO Make this work. Currently produces null characters and IndexOutOfBoundsException.
-
 }

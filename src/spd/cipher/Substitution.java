@@ -23,6 +23,10 @@ public class Substitution extends Cipher {
         super(text, option);
     }
 
+    /**
+     * Set a key for encryption or decryption
+     * @param key
+     */
     public void setKey(String key) {
         key = key.toLowerCase();
         if (key.length() == 26) {
@@ -33,6 +37,11 @@ public class Substitution extends Cipher {
         initKeymap();
     }
 
+    /**
+     * Initialise the key
+     * Create a full 26 character key.
+     * Create an inverse keymap for decryption
+     */
     private void initKeymap() {
         char[] alphabetArray = English.alphabet.toCharArray();
         char[] keyArray = key.toCharArray();
@@ -42,12 +51,19 @@ public class Substitution extends Cipher {
         inverseKeymap = invert(keymap);
     }
 
-
+    /**
+     * Initialise the keymap for a specific key
+     * @param key
+     */
     private void initKeymap(String key) {
         setKey(key);
         initKeymap();
     }
 
+    /**
+     * Encrypt the plaintext using the predefined key
+     * @return The encrypted text
+     */
     public String encrypt() {
         char[] plaintextArray = plaintext.toCharArray();
         char[] ciphertextArray = new char[plaintextArray.length];
@@ -58,11 +74,20 @@ public class Substitution extends Cipher {
         return new String(ciphertextArray);
     }
 
+    /**
+     * Encrypt the plaintext using a new key
+     * @param key The key to encrypt with
+     * @return The encrypted text
+     */
     public String encrypt(String key) {
         initKeymap(key);
         return encrypt();
     }
 
+    /**
+     * Decrypt the ciphertext using the predefined key
+     * @return The decrypted text
+     */
     public String decrypt() {
         char[] ciphertextArray = ciphertext.toCharArray();
         char[] plaintextArray = new char[ciphertextArray.length];
@@ -73,11 +98,21 @@ public class Substitution extends Cipher {
         return new String(plaintextArray);
     }
 
+    /**
+     * Decrypt the ciphertext with a new key
+     * @param key The key to decrypt with
+     * @return The decrypted text
+     */
     public String decrypt(String key) {
         initKeymap(key);
         return decrypt();
     }
 
+    /**
+     * Swap 2 random letters in a key
+     * @param key The key to change
+     * @return The new key
+     */
     private String swap2letters(String key) {
         Random r = new Random();
         char[] keyArray = key.toCharArray();
@@ -90,12 +125,16 @@ public class Substitution extends Cipher {
         return new String(keyArray);
     }
 
+    /**
+     * Generate a random key
+     * @return A randomly generated key
+     */
     private String newRandomKey() {
         String newKey = "";
         Random r = new Random();
 
-        for (int i=0; i<26; i++) {
-            String next = String.valueOf((char) r.nextInt(26) + 97); // don't think this will work
+        while (newKey.length() < 26) {
+            String next = String.valueOf((char) (r.nextInt(26) + 97)); // don't think this will work
             if (!newKey.contains(next)) {
                 newKey += next;
             }
@@ -103,9 +142,31 @@ public class Substitution extends Cipher {
         return newKey;
     }
 
+    /**
+     * Perform a Hill Climbing Decryption for a substitution cipher
+     * @return Hopefully the decrypted text.
+     */
     public String hillClimbDecrypt() {
-        String seedKey = newRandomKey();
-        return "";
+        String parentKey = newRandomKey();
+        System.out.println(parentKey);
+        String decipheredText = decrypt(parentKey);
+        double fitness = English.chiSquaredStat(decipheredText);
+        int count = 0;
+        while (count < 1000) {
+            String newKey = swap2letters(parentKey);
+            String newText = decrypt(newKey);
+            double newFitness = English.chiSquaredStat(newText);
+            if (newFitness < fitness) {
+                parentKey = newKey;
+                decipheredText = newText;
+                System.out.println(decipheredText);
+                System.out.println();
+                fitness = newFitness;
+                count = 0;
+            }
+        }
+        System.out.println("#########################################################################");
+        return decipheredText;
     }
 
 

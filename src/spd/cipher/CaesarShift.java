@@ -1,10 +1,6 @@
 package spd.cipher;
 
-import java.util.ArrayList;
-
 public class CaesarShift extends Cipher {
-
-    private ArrayList<String> probableSolutions;
 
     public CaesarShift() {
         super();
@@ -18,6 +14,12 @@ public class CaesarShift extends Cipher {
         super(text, option);
     }
 
+    /**
+     * Shift every letter in a string a specific number of places.
+     * @param string The string to shift
+     * @param shift The amount to shift each letter
+     * @return The shifted text
+     */
     public String shiftString(String string, int shift) {
         int[] asciiLetters = ascify(string);
         for (int a=0; a<asciiLetters.length; a++) {
@@ -26,14 +28,28 @@ public class CaesarShift extends Cipher {
         return unascify(asciiLetters);
     }
 
+    /**
+     * Encrypt the plaintext
+     * @param key
+     * @return The encrypted plaintext
+     */
     public String encrypt(int key) {
         return shiftString(plaintext, key);
     }
 
+    /**
+     * Decrypt the ciphertext
+     * @param key
+     * @return The decrypted text
+     */
     public String decrypt(int key) {
         return shiftString(ciphertext, 26-key);
     }
 
+    /**
+     * Brute force decryption of the ciphertext
+     * @return The decrypted text
+     */
     public String decrypt() {
         String[] allShifts = decryptAllShifts();
         double score = 9999.0;
@@ -48,6 +64,10 @@ public class CaesarShift extends Cipher {
         return probablePlaintext;
     }
 
+    /**
+     * Decrypt every shift
+     * @return An array containg all decryptions of the text
+     */
     public String[] decryptAllShifts() {
         String[] allShifts = new String[26];
         for (int i=0; i<26; i++) {
@@ -56,7 +76,4 @@ public class CaesarShift extends Cipher {
         return allShifts;
     }
 
-    public ArrayList<String> getProbableSolutions() {
-        return probableSolutions;
-    }
 }
