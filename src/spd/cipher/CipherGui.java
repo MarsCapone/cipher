@@ -106,7 +106,12 @@ public class CipherGui implements ActionListener {
                                 if (!key.equals("")) {
                                     plaintext = caesar.decrypt(new Integer(key));
                                 } else {
-                                    plaintext = caesar.decrypt();
+                                    //plaintext = caesar.decrypt();
+                                    String[] allShifts = caesar.decryptAllShifts();
+                                    for (String s: allShifts) {
+                                        System.out.println(s);
+                                        System.out.println();
+                                    }
                                 }
                             }
                         } catch (NumberFormatException n) {

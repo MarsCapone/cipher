@@ -171,4 +171,17 @@ public class English {
         }
         return sb.toString();
     }
+
+    public static String getBestChi(String[] texts) {
+        String solution = "";
+        double fitness = 9999;
+        for (String text : texts) {
+            double newFitness = chiSquaredStat(text);
+            if (newFitness < fitness) {
+                fitness = newFitness;
+                solution = text;
+            }
+        }
+        return solution;
+    }
 }

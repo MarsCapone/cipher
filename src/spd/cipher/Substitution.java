@@ -1,7 +1,6 @@
 package spd.cipher;
 
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Substitution extends Cipher {
 
@@ -150,9 +149,9 @@ public class Substitution extends Cipher {
         NGramScore ngrams = new NGramScore("quadgrams.txt", 4);
         String decipheredText = "";
         double fitness = -9999;
-        boolean finished = false;
         int realcount = 0;
-        for (int i=0; i<200; i++) {
+        ArrayList<String> allDeciphers = new ArrayList<>();
+        for (int i=0; i<50; i++) {
             String parentKey = newRandomKey();
             decipheredText = decrypt(parentKey);
             fitness = ngrams.score(decipheredText);
@@ -168,18 +167,53 @@ public class Substitution extends Cipher {
                     fitness = newFitness;
                     count = 0;
 
-                    System.out.printf("Attempt: %d \n", realcount);
-                    System.out.println(decipheredText);
-                    System.out.println();
+                    //System.out.printf("Attempt: %d | Fitness: %3.3f \n", realcount, fitness);
+                    //System.out.println(decipheredText);
+                    //System.out.println();
                 }
 
             }
+            allDeciphers.add(decipheredText);
 
         }
-        System.out.println("#########################################################################");
-        System.out.println(realcount);
-        return decipheredText;
+
+        Collections.sort(allDeciphers, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                double s1chi = English.chiSquaredStat(s1);
+                double s2chi = English.chiSquaredStat(s2);
+                if (s1chi < s2chi) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+
+        HashMap<String, Integer> decryptionCounts = new HashMap<>();
+        for (String i: allDeciphers) {
+            if (decryptionCounts.containsKey(i)) {
+                decryptionCounts.put(i, decryptionCounts.get(i)+1);
+            } else {
+                decryptionCounts.put(i, 1);
+            }
+        }
+
+        Iterator it = decryptionCounts.entrySet().iterator();
+        String solution = "";
+        int count = 0;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if ((int) pairs.getValue() > count) {
+                count = (int) pairs.getValue();
+                solution = (String) pairs.getKey();
+            }
+        }
+
+        return solution;
     }
+
+
 
 
 }

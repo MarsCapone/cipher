@@ -2,18 +2,20 @@ package spd.cipher;// by samson
 
 public class Test {
     public static void main(String[] args) {
-        String plain = "Defend the east wall of the castle";
+        String plain = "defendtheeastwallofthecastle";
         String cipher = "SOWFBRKAWFCZFSBSCSBQITBKOWLBFXTBKOWLSOXSOXFZWWIBICFWUQLRXINOCIJLWJFQUNWXLFBSZXFBT\n" +
                 "XAANTQIFBFSFQUFCZFSBSCSBIMWHWLNKAXBISWGSTOXLXTSWLUQLXJBUUWLWISTBKOWLSWGSTOXLXTSWL\n" +
                 "BSJBUUWLFULQRTXWFXLTBKOWLBISOXSSOWTBKOWLXAKOXZWSBFIQSFBRKANSOWXAKOXZWSFOBUSWJBSBF\n" +
                 "TQRKAWSWANECRZAWJ";
+        String vigdec = new Vigenere(plain, 1).encrypt("bc");
 
-        Substitution sub = new Substitution(cipher);
 
-        NGramScore ngrams = new NGramScore("quadgrams.txt", 4);
+        //System.out.println(vigdec);
+        //System.out.println(vigdec.length());
 
-        //System.out.println(ngrams.score("ATTACKTHEEASTWALLOFTHECASTLEATDAWN".toLowerCase()));
+        Vigenere vigen = new Vigenere(vigdec);
+        String vigpl = vigen.decrypt(2);
+        System.out.println(vigpl);
 
-        System.out.println(sub.hillClimbDecrypt());
     }
 }
