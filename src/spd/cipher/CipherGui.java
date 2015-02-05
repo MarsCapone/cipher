@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.server.UID;
 import java.util.Enumeration;
 
 public class CipherGui implements ActionListener {
@@ -37,6 +38,7 @@ public class CipherGui implements ActionListener {
     private JButton button_go;
 
     private JFormattedTextField keyField;
+    private JPanel border;
 
     private String PLAINTEXT, CIPHERTEXT, KEY;
 
@@ -44,9 +46,11 @@ public class CipherGui implements ActionListener {
         JFrame frame = new JFrame("CipherGui");
         frame.setContentPane(this.root);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(600, 480));
+        //frame.setPreferredSize(new Dimension(600, 480));
 
         combobox_encdec.setEnabled(true);
+
+        label_title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 
         cipherType = new ButtonGroup();
         cipherType.add(cipher_hill);
@@ -70,10 +74,16 @@ public class CipherGui implements ActionListener {
         textarea_plaintext.setLineWrap(true);
 
         frame.pack();
+        frame.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         new CipherGui();
     }
 
@@ -123,7 +133,7 @@ public class CipherGui implements ActionListener {
                                 } else {
                                     //plaintext = caesar.decrypt();
                                     String[] allShifts = caesar.decryptAllShifts();
-                                    for (String s: allShifts) {
+                                    for (String s : allShifts) {
                                         System.out.println(s);
                                         System.out.println();
                                     }
@@ -175,7 +185,9 @@ public class CipherGui implements ActionListener {
                     case "affine shift":
                         try {
                             if (encrypt) {
-                                String[] keys = key.split("\\D"); int a = Integer.valueOf(keys[0]); int b = Integer.valueOf(keys[1]);
+                                String[] keys = key.split("\\D");
+                                int a = Integer.valueOf(keys[0]);
+                                int b = Integer.valueOf(keys[1]);
                                 Affine affine = new Affine(plaintext, 1);
                                 ciphertext = affine.encrypt(a, b);
                             } else {
@@ -183,7 +195,9 @@ public class CipherGui implements ActionListener {
                                 if (key.equals("")) {
                                     plaintext = affine.decrypt();
                                 } else {
-                                    String[] keys = key.split("\\D"); int a = Integer.valueOf(keys[0]); int b = Integer.valueOf(keys[1]);
+                                    String[] keys = key.split("\\D");
+                                    int a = Integer.valueOf(keys[0]);
+                                    int b = Integer.valueOf(keys[1]);
                                     plaintext = affine.decrypt(a, b);
                                 }
                             }
@@ -250,7 +264,7 @@ public class CipherGui implements ActionListener {
     }
 
     private String getCipherType() {
-        for (Enumeration<AbstractButton> buttons = cipherType.getElements(); buttons.hasMoreElements();) {
+        for (Enumeration<AbstractButton> buttons = cipherType.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
                 return button.getText();
@@ -283,7 +297,4 @@ public class CipherGui implements ActionListener {
             return true;
         }
     }
-
-
-
 }
