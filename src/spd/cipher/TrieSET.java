@@ -37,7 +37,7 @@ import java.util.Queue;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class TrieSET implements Iterable<String> {
+class TrieSET implements Iterable<String> {
     private static final int R = 256;        // extended ASCII
 
     private Node root;      // root of trie
@@ -58,8 +58,7 @@ public class TrieSET implements Iterable<String> {
      */
     public boolean contains(String key) {
         Node x = get(root, key, 0);
-        if (x == null) return false;
-        return x.isString;
+        return x != null && x.isString;
     }
 
     private Node get(Node x, String key, int d) {
@@ -95,7 +94,7 @@ public class TrieSET implements Iterable<String> {
      * Returns the number of strings in the set.
      * @return the number of strings in the set
      */
-    public int size() {
+    int size() {
         return N;
     }
 
@@ -123,7 +122,7 @@ public class TrieSET implements Iterable<String> {
      * @return all of the keys in the set that start with <tt>prefix</tt>,
      *     as an iterable
      */
-    public Iterable<String> keysWithPrefix(String prefix) {
+    Iterable<String> keysWithPrefix(String prefix) {
         Queue<String> results = new PriorityQueue<>();
         Node x = get(root, prefix, 0);
         collect(x, new StringBuilder(prefix), results);
@@ -232,7 +231,7 @@ public class TrieSET implements Iterable<String> {
 
     // R-way trie node
     private static class Node {
-        private Node[] next = new Node[R];
+        private final Node[] next = new Node[R];
         private boolean isString;
     }
 

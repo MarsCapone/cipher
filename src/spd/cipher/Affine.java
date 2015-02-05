@@ -1,10 +1,6 @@
 package spd.cipher;
 
-public class Affine extends Cipher {
-
-    public Affine() {
-        super();
-    }
+class Affine extends Cipher {
 
     public Affine(String ciphertext) {
         super(ciphertext);
@@ -18,8 +14,8 @@ public class Affine extends Cipher {
     /**
      * Encrypt an individual character
      * @param letter The character to encrypt
-     * @param a
-     * @param b
+     * @param a The coefficient
+     * @param b The constant
      * @return The encrypted character
      */
     private char encLet(char letter, int a, int b) {
@@ -29,8 +25,8 @@ public class Affine extends Cipher {
     /**
      * Decrypt an individual character
      * @param letter The character to decrypt
-     * @param inverse_a
-     * @param b
+     * @param inverse_a The inverse of the coefficient of a
+     * @param b The constant
      * @return The decrypted character
      */
     private char decLet(char letter, int inverse_a, int b) {

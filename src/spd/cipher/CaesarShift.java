@@ -1,6 +1,6 @@
 package spd.cipher;
 
-public class CaesarShift extends Cipher {
+class CaesarShift extends Cipher {
 
     public CaesarShift() {
         super();
@@ -20,7 +20,7 @@ public class CaesarShift extends Cipher {
      * @param shift The amount to shift each letter
      * @return The shifted text
      */
-    public String shiftString(String string, int shift) {
+    String shiftString(String string, int shift) {
         int[] asciiLetters = ascify(string);
         for (int a=0; a<asciiLetters.length; a++) {
             asciiLetters[a] = ((asciiLetters[a] + shift - 97) % 26) + 97;
@@ -30,7 +30,7 @@ public class CaesarShift extends Cipher {
 
     /**
      * Encrypt the plaintext
-     * @param key
+     * @param key The key to encrypt with
      * @return The encrypted plaintext
      */
     public String encrypt(int key) {
@@ -39,7 +39,7 @@ public class CaesarShift extends Cipher {
 
     /**
      * Decrypt the ciphertext
-     * @param key
+     * @param key The key used to encrypt the plaintext
      * @return The decrypted text
      */
     public String decrypt(int key) {

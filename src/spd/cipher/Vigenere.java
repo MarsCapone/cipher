@@ -2,11 +2,10 @@ package spd.cipher;
 
 import java.util.ArrayList;
 
-public class Vigenere extends Cipher {
+class Vigenere extends Cipher {
 
-    private ArrayList<String> shiftStorage = new ArrayList<>();
+    private final ArrayList<String> shiftStorage = new ArrayList<>();
     private String KEY;
-    private int KEYLENGTH;
 
     public Vigenere() {
         super();
@@ -127,9 +126,7 @@ public class Vigenere extends Cipher {
             }
         }
 
-        KEYLENGTH = English.highestPrimeFactor(key);
-
-        return decrypt(KEYLENGTH);
+        return decrypt(English.highestPrimeFactor(key));
     }
 
     public String getDecryptionKey(int keylength) {

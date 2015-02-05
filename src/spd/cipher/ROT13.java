@@ -1,11 +1,6 @@
 package spd.cipher;
 
-public class ROT13 extends Substitution {
-
-    public ROT13() {
-        super();
-        setKey("nopqrstuvwxyzabcdefghijklm");
-    }
+class ROT13 extends Substitution {
 
     public ROT13(String ciphertext) {
         super(ciphertext);

@@ -2,15 +2,14 @@ package spd.cipher;
 
 import java.util.*;
 
-public class Substitution extends Cipher {
-
-    private String key;
+class Substitution extends Cipher {
 
     // keymap is plain:cipher
-    private HashMap<Character,Character> keymap = new HashMap<Character, Character>();
-    private HashMap<Character,Character> inverseKeymap = new HashMap<Character, Character>();
+    private final HashMap<Character,Character> keymap = new HashMap<>();
+    private String key;
+    private HashMap<Character,Character> inverseKeymap = new HashMap<>();
 
-    public Substitution() {
+    Substitution() {
         super();
     }
 
@@ -24,9 +23,9 @@ public class Substitution extends Cipher {
 
     /**
      * Set a key for encryption or decryption
-     * @param key
+     * @param key The key to use for encryption or decryption
      */
-    public void setKey(String key) {
+    void setKey(String key) {
         key = key.toLowerCase();
         if (key.length() == 26) {
             this.key = key;
@@ -52,7 +51,7 @@ public class Substitution extends Cipher {
 
     /**
      * Initialise the keymap for a specific key
-     * @param key
+     * @param key The key to inialise
      */
     private void initKeymap(String key) {
         setKey(key);
@@ -147,9 +146,8 @@ public class Substitution extends Cipher {
      */
     public String hillClimbDecrypt() {
         NGramScore ngrams = new NGramScore("quadgrams.txt", 4);
-        String decipheredText = "";
-        double fitness = -9999;
-        int realcount = 0;
+        String decipheredText;
+        double fitness;
         ArrayList<String> allDeciphers = new ArrayList<>();
         for (int i=0; i<50; i++) {
             String parentKey = newRandomKey();
@@ -157,7 +155,7 @@ public class Substitution extends Cipher {
             fitness = ngrams.score(decipheredText);
             int count = 0;
             while (count < 2000) {
-                count++; realcount++;
+                count++;
                 String newKey = swap2letters(parentKey);
                 String newText = decrypt(newKey);
                 double newFitness = ngrams.score(newText);

@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class English {
+class English {
 
     public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
     public static final char[] alphabetArray = alphabet.toCharArray();
-    public static final Map<Character, Double> expectedAlpha = createMap(); // the expected fractions of the english language for specific characters
-    public static TrieSET trieset = createTrieSet(); // A Trie Set preloaded with keys from a dictionary
+    private static final Map<Character, Double> expectedAlpha = createMap(); // the expected fractions of the english language for specific characters
+    private static final TrieSET trieset = createTrieSet(); // A Trie Set preloaded with keys from a dictionary
 
     /**
      * @return Setup for the expectedAlpha variable
@@ -38,7 +38,7 @@ public class English {
         HashSet<String> dict = new HashSet<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("/usr/share/dict/cracklib-small")));
-            String line = null;
+            String line;
             while ((line = br.readLine()) != null) {
                 dict.add(line);
             }
@@ -56,11 +56,11 @@ public class English {
 
     /**
      * Create map of characters and numbers for counts of letters in a string
-     * @param string
-     * @return
+     * @param string The string to analyse
+     * @return A map of characters and their frequencies in the text
      */
-    public static LinkedHashMap<Character,Double> frequencyAnalysis(String string) {
-        LinkedHashMap<Character,Double> freq = new LinkedHashMap<Character, Double>();
+    private static LinkedHashMap<Character,Double> frequencyAnalysis(String string) {
+        LinkedHashMap<Character,Double> freq = new LinkedHashMap<>();
         for (int i=0; i<string.length(); i++) {
             Character c = string.charAt(i);
             Double currentCount = freq.get(c);
@@ -71,57 +71,6 @@ public class English {
             }
         }
         return freq;
-    }
-
-    /**
-     * Inefficient way to calculate englishness of a String. The highest value is 12 (very english).
-     * The lowest value is 0 (not very english)
-     * @param string The string to calculate englishness for.
-     * @return A value in the range 0-12
-     */
-    @Deprecated
-    public static int englishScore(String string) {
-
-            LinkedHashMap<Character, Double> frequency = frequencyAnalysis(string);
-            List<Map.Entry<Character, Double>> sortedFrequency = new ArrayList<Map.Entry<Character, Double>>(frequency.entrySet());
-            Collections.sort(sortedFrequency, new Comparator<Map.Entry<Character, Double>>() {
-                @Override
-                public int compare(Map.Entry<Character, Double> a, Map.Entry<Character, Double> b) {
-                    return b.getValue().compareTo(a.getValue());
-                }
-            });
-
-            int points = 0;
-        try {
-            char[] fullPointsStart = {'e', 't', 'a', 'o', 'i', 'n'};
-            char[] fullPointsEnd = {'v', 'k', 'x', 'j', 'q', 'z'};
-
-            for (char startChar : fullPointsStart) {
-                List<Map.Entry<Character, Double>> actualStart = sortedFrequency.subList(0, 6);
-                for (Map.Entry actualEntry : actualStart) {
-                    if (actualEntry.getKey().equals(startChar)) {
-                        points++;
-                    }
-                }
-            }
-
-            for (char endChar : fullPointsEnd) {
-                List<Map.Entry<Character, Double>> actualEnd = sortedFrequency.subList(frequency.size() - 6, frequency.size());
-                for (Map.Entry actualEntry : actualEnd) {
-                    if (actualEntry.getKey().equals(endChar)) {
-                        points++;
-                    }
-                }
-            }
-
-            return points;
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Not enough letters in the string.");
-            e.printStackTrace();
-            System.out.println(points);
-            System.out.println();
-        }
-        return 0;
     }
 
     /**
@@ -165,7 +114,7 @@ public class English {
      * @param text The text to find spaces for
      * @return The newly spaced text
      */
-    public static String inferSpaces(TrieSET set, String text) {
+    private static String inferSpaces(TrieSET set, String text) {
         StringBuilder sb = new StringBuilder();
         String root = text;
         while (root.length()>0) {
@@ -180,11 +129,11 @@ public class English {
     public static String getBestChi(String[] texts) {
         String solution = "";
         double fitness = 9999;
-        for (int t=0; t<texts.length; t++) {
-            double newFitness = chiSquaredStat(texts[t]);
+        for (String text : texts) {
+            double newFitness = chiSquaredStat(text);
             if (newFitness < fitness) {
                 fitness = newFitness;
-                solution = texts[t];
+                solution = text;
             }
         }
         return solution;
@@ -210,7 +159,7 @@ public class English {
         Iterator it = frequency.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
-            char letter = (char) pairs.getKey(); double count = (double) pairs.getValue();
+            double count = (double) pairs.getValue();
             sum += count * (count - 1);
         }
         return sum/(len*(len-1));

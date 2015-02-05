@@ -1,6 +1,6 @@
 package spd.cipher;// by samson
 
-public class ColumnarTransposition extends Cipher {
+class ColumnarTransposition extends Cipher {
     public ColumnarTransposition() {
         super();
     }
@@ -15,7 +15,6 @@ public class ColumnarTransposition extends Cipher {
 
     private String[] string2columns(String text, int keylength) {
         String[] columns = new String[keylength];
-        StringBuilder columnBuilder = new StringBuilder();
         int textlength = text.length();
         for (int s=0; s<keylength; s++) {
             StringBuilder col = new StringBuilder();
@@ -28,7 +27,6 @@ public class ColumnarTransposition extends Cipher {
     }
 
     private String columns2string(String [] columns) {
-        int n = columns.length;
         StringBuilder stringBuilder = new StringBuilder();
         int i=0;
         while (true) {

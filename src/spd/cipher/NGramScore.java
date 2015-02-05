@@ -9,14 +9,13 @@ import java.util.Set;
 /**
  * Translated from ngram_score.py from practicalcryptography.com
  */
-public class NGramScore {
+class NGramScore {
 
-    HashMap<String, Double> ngrams = new HashMap<>();
-    int L;
-    int N = 0;
-    double floor;
+    private final HashMap<String, Double> ngrams = new HashMap<>();
+    private final int L;
+    private final double floor;
 
-    public NGramScore(String ngramfile, String separator, int ngramSize) {
+    private NGramScore(String ngramfile, String separator, int ngramSize) {
         String line;
         try {
             BufferedReader br = new BufferedReader(new FileReader("/home/samson/IdeaProjects/cipher/ngrams/"+ngramfile));
@@ -31,17 +30,18 @@ public class NGramScore {
         L = ngramSize;
 
         Iterator it = ngrams.values().iterator();
+        int n = 0;
         while (it.hasNext()) {
-            N += (double) it.next();
+            n += (double) it.next();
         }
 
         Set<String> keys = ngrams.keySet();
         for (String key: keys) {
-            double value = Math.log10((float) (ngrams.get(key) / N));
+            double value = Math.log10((float) (ngrams.get(key) / n));
             ngrams.put(key, value);
         }
 
-        floor = Math.log10(0.01/N);
+        floor = Math.log10(0.01/ n);
     }
 
     public NGramScore(String ngramfile, int ngramSize) {

@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
-public class CipherGui implements ActionListener {
+class CipherGui implements ActionListener {
+    private final ButtonGroup cipherType;
     private JPanel root;
     private JLabel label_title;
     private JLabel label_plaintext;
@@ -14,11 +15,8 @@ public class CipherGui implements ActionListener {
     private JLabel label_englishness;
     private JLabel label_author;
     private JLabel label_key;
-
     private JTextArea textarea_plaintext;
     private JTextArea textarea_ciphertext;
-
-    private ButtonGroup cipherType;
     private JRadioButton cipher_hill;
     private JRadioButton cipher_unknown;
     private JRadioButton cipher_affine;
@@ -40,9 +38,9 @@ public class CipherGui implements ActionListener {
     private JFormattedTextField keyField;
     private JPanel border;
 
-    private String PLAINTEXT, CIPHERTEXT, KEY;
+    private String PLAINTEXT;
 
-    public CipherGui() {
+    private CipherGui() {
         JFrame frame = new JFrame("CipherGui");
         frame.setContentPane(this.root);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -223,8 +221,7 @@ public class CipherGui implements ActionListener {
                                     plaintext = vigenere.decrypt(key);
                                 }
                             }
-                            KEY = vigenere.getKEY();
-                            keyField.setText(KEY);
+                            keyField.setText(vigenere.getKEY());
                         }
                         break;
 
@@ -233,9 +230,8 @@ public class CipherGui implements ActionListener {
                         break;
                 }
                 PLAINTEXT = plaintext;
-                CIPHERTEXT = ciphertext;
                 if (encrypt) {
-                    setCiphertext(CIPHERTEXT);
+                    setCiphertext(ciphertext);
                 } else {
                     if (inferSpaces) {
                         setPlaintext(English.inferSpaces(PLAINTEXT));
@@ -292,10 +288,6 @@ public class CipherGui implements ActionListener {
 
     private boolean keyRequired() {
         String cipher = getCipherType();
-        if (cipher.equalsIgnoreCase("rot13") || cipher.equalsIgnoreCase("atbash")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(cipher.equalsIgnoreCase("rot13") || cipher.equalsIgnoreCase("atbash"));
     }
 }
