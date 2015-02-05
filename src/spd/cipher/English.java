@@ -1,8 +1,8 @@
 package spd.cipher;
 
-import org.apache.commons.io.FileUtils;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -35,18 +35,23 @@ public class English {
      * @return Setup for the trieset variable
      */
     private static TrieSET createTrieSet() {
+        HashSet<String> dict = new HashSet<>();
         try {
-            HashSet<String> dict = new HashSet<String>(FileUtils.readLines(new File("/home/samson/IdeaProjects/cipher/dictionaries/cracklib-small")));
-            TrieSET trie = new TrieSET();
-            Iterator it = dict.iterator();
-            while (it.hasNext()) {
-                trie.add((String) it.next());
+            BufferedReader br = new BufferedReader(new FileReader(new File("/usr/share/dict/cracklib-small")));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                dict.add(line);
             }
-            return trie;
+            br.close();
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            System.out.println("Cracklib word list does not exist.");
         }
+        TrieSET trie = new TrieSET();
+        Iterator it = dict.iterator();
+        while (it.hasNext()) {
+            trie.add((String) it.next());
+        }
+        return trie;
     }
 
     /**

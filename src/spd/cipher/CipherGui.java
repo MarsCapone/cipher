@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.server.UID;
 import java.util.Enumeration;
 
 public class CipherGui implements ActionListener {
@@ -30,6 +29,7 @@ public class CipherGui implements ActionListener {
     private JRadioButton cipher_beaufort;
     private JRadioButton cipher_autokey;
     private JRadioButton cipher_rot13;
+    private JRadioButton cipher_coltrans;
 
     private JComboBox combobox_encdec;
 
@@ -63,6 +63,7 @@ public class CipherGui implements ActionListener {
         cipherType.add(cipher_beaufort);
         cipherType.add(cipher_autokey);
         cipherType.add(cipher_rot13);
+        cipherType.add(cipher_coltrans);
 
         button_go.addActionListener(this);
         cipher_affine.addActionListener(this);
