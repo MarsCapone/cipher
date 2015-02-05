@@ -175,13 +175,50 @@ public class English {
     public static String getBestChi(String[] texts) {
         String solution = "";
         double fitness = 9999;
-        for (String text : texts) {
-            double newFitness = chiSquaredStat(text);
+        for (int t=0; t<texts.length; t++) {
+            double newFitness = chiSquaredStat(texts[t]);
             if (newFitness < fitness) {
                 fitness = newFitness;
-                solution = text;
+                solution = texts[t];
             }
         }
         return solution;
+    }
+
+    public static char getBestChiKey(String[] texts) {
+        double fitness = 9999;
+        int index = 0;
+        for (int t=0; t<texts.length; t++) {
+            double newFitness = chiSquaredStat(texts[t]);
+            if (newFitness < fitness) {
+                fitness = newFitness;
+                index = t;
+            }
+        }
+        return (char) (index + 'a');
+    }
+
+    public static double indexOfCoincidence(String text) {
+        double sum = 0;
+        double len = text.length();
+        LinkedHashMap frequency = English.frequencyAnalysis(text);
+        Iterator it = frequency.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            char letter = (char) pairs.getKey(); double count = (double) pairs.getValue();
+            sum += count * (count - 1);
+        }
+        return sum/(len*(len-1));
+    }
+
+    public static int highestPrimeFactor(int n) {
+        int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29}; // keys are unlikely to be more than 30 characters
+        int max = 0;
+        for (int p : primes) {
+            if (n%p == 0) {
+                max = p;
+            }
+        }
+        return max;
     }
 }
