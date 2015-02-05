@@ -38,6 +38,8 @@ public class CipherGui implements ActionListener {
 
     private JFormattedTextField keyField;
 
+    private String PLAINTEXT, CIPHERTEXT, KEY;
+
     public CipherGui() {
         JFrame frame = new JFrame("CipherGui");
         frame.setContentPane(this.root);
@@ -60,6 +62,7 @@ public class CipherGui implements ActionListener {
 
         button_go.addActionListener(this);
         cipher_affine.addActionListener(this);
+        checkbox_inferspaces.addActionListener(this);
 
         textarea_ciphertext.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textarea_ciphertext.setLineWrap(true);
@@ -79,6 +82,18 @@ public class CipherGui implements ActionListener {
         if (actionEvent.getSource() == cipher_affine) {
             showMessagePopup("If providing a key, please enter values for a and b in the form \"a,b\".\n"
                     + "The equation for encryption is in the form, y=ax+b", "Incorrect Key");
+        }
+
+        if (actionEvent.getSource() == checkbox_inferspaces) {
+            if (inferSpaces()) {
+                if (getEncDec().equalsIgnoreCase("decrypt")) {
+                    setPlaintext(English.inferSpaces(PLAINTEXT));
+                }
+            } else {
+                if (getEncDec().equalsIgnoreCase("decrypt")) {
+                    setPlaintext(PLAINTEXT);
+                }
+            }
         }
 
         if (actionEvent.getSource() == button_go) {
@@ -177,20 +192,41 @@ public class CipherGui implements ActionListener {
                             n.printStackTrace();
                         }
                         break;
+                    case "vigenere":
+                        if (encrypt) {
+                            Vigenere vigenere = new Vigenere(plaintext, 1);
+                            ciphertext = vigenere.encrypt(key);
+                        } else {
+                            Vigenere vigenere = new Vigenere(ciphertext);
+                            if (key.equals("")) {
+                                plaintext = vigenere.decrypt();
+                            } else {
+                                try {
+                                    int keylength = Integer.valueOf(key);
+                                    plaintext = vigenere.decrypt(keylength);
+                                } catch (NumberFormatException n) {
+                                    plaintext = vigenere.decrypt(key);
+                                }
+                            }
+                            KEY = vigenere.getKEY();
+                            keyField.setText(KEY);
+                        }
+                        break;
+
                     default:
                         System.out.println("That function does not yet exist.");
                         break;
                 }
+                PLAINTEXT = plaintext;
+                CIPHERTEXT = ciphertext;
                 if (encrypt) {
-                    if (inferSpaces) {
-                        ciphertext = English.inferSpaces(ciphertext);
-                    }
-                    setCiphertext(ciphertext);
+                    setCiphertext(CIPHERTEXT);
                 } else {
                     if (inferSpaces) {
-                        plaintext = English.inferSpaces(plaintext);
+                        setPlaintext(English.inferSpaces(PLAINTEXT));
+                    } else {
+                        setPlaintext(PLAINTEXT);
                     }
-                    setPlaintext(plaintext);
                 }
             }
         }

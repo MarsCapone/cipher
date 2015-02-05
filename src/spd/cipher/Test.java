@@ -7,8 +7,11 @@ public class Test {
         String vigdec = new Vigenere(plain, 1).encrypt("bc");
 
         Vigenere vigen = new Vigenere(cipher);
-        String vigpl = vigen.getDecryptionKey(7);
+        String vigpl = vigen.decrypt();
 
         System.out.println(vigpl);
+
+        System.out.println(vigen.decrypt("ciphers"));
+        System.out.println(English.inferSpaces(vigen.decrypt("ciphers")));
     }
 }

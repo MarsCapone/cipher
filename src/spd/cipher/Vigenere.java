@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Vigenere extends Cipher {
 
     private ArrayList<String> shiftStorage = new ArrayList<>();
-    private String key;
+    private String KEY;
+    private int KEYLENGTH;
 
     public Vigenere() {
         super();
@@ -20,6 +21,7 @@ public class Vigenere extends Cipher {
     }
 
     public String encrypt(String key) {
+        shiftStorage.clear();
         int keylength = key.length();
         for (int s=0; s<keylength; s++) {
             StringBuilder sb = new StringBuilder();
@@ -45,6 +47,7 @@ public class Vigenere extends Cipher {
     }
 
     public String decrypt(String key) {
+        shiftStorage.clear();
 
         int keylength = key.length();
 
@@ -58,7 +61,7 @@ public class Vigenere extends Cipher {
 
         for (int t=0; t<keylength; t++) {
             String[] allShifts = new CaesarShift(shiftStorage.get(t)).decryptAllShifts();
-            char shift = English.getBestChiKey(allShifts);
+            char shift = key.charAt(t);
             shiftStorage.set(t, allShifts[shift - 97]); // to get back to 0-26 range
         }
 
@@ -78,6 +81,7 @@ public class Vigenere extends Cipher {
     }
 
     public String decrypt(int keylength) {
+        shiftStorage.clear();
         StringBuilder keyBuilder = new StringBuilder();
 
         for (int s=0; s<keylength; s++) {
@@ -95,12 +99,13 @@ public class Vigenere extends Cipher {
             keyBuilder.append(shift);
         }
 
-        key = String.valueOf(keyBuilder);
+        KEY = String.valueOf(keyBuilder);
 
         return decrypt(String.valueOf(keyBuilder));
     }
 
     public String decrypt() {
+        shiftStorage.clear();
         ArrayList<Double> icValues = new ArrayList<>();
         for (int key=1; key<30; key++) {
             StringBuilder sb = new StringBuilder();
@@ -122,18 +127,22 @@ public class Vigenere extends Cipher {
             }
         }
 
-        key = English.highestPrimeFactor(key);
+        KEYLENGTH = English.highestPrimeFactor(key);
 
-        return decrypt(key);
+        return decrypt(KEYLENGTH);
     }
 
     public String getDecryptionKey(int keylength) {
         decrypt(keylength);
-        return key;
+        return KEY;
     }
 
     public String getDecryptionKey() {
         decrypt();
-        return key;
+        return KEY;
+    }
+
+    public String getKEY() {
+        return KEY;
     }
 }
