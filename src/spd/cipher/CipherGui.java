@@ -40,7 +40,7 @@ class CipherGui implements ActionListener {
 
     private String PLAINTEXT;
 
-    private CipherGui() {
+    public CipherGui() {
         JFrame frame = new JFrame("CipherGui");
         frame.setContentPane(this.root);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
